@@ -7,6 +7,10 @@ const UserSchema = new Schema({
         type:String,
         required: true,
         unique: true
+    },
+    isAuthor: {
+        type: Boolean,
+        default: false
     }
 })
 
