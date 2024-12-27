@@ -2,10 +2,11 @@ const express = require('express')
 const router = express.Router({mergeParams:true})
 const Account = require('../models/Account')
 const Transaction = require('../models/transaction')
+const { isOwner, isAdmin } = require('../middleware')
 
 
 
-router.post('/', async(req,res)=>{
+router.post('/', isOwner,async(req,res)=>{
     const account = await Account.findById(req.params.id)
     const transaction = new Transaction(req.body.Transaction)
     account.transactions.push(transaction._id)
@@ -15,7 +16,7 @@ router.post('/', async(req,res)=>{
     res.redirect(`/accounts/${account._id}`)
 })
 
-router.delete('/:transactionId', async(req,res)=>{
+router.delete('/:transactionId', isAdmin,async(req,res)=>{
     const {id,transactionId}=req.params
      await Account.findByIdAndUpdate(id,{$pull:{transactions:transactionId}})
     await Transaction.findByIdAndDelete(transactionId)

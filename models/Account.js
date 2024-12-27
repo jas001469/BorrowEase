@@ -7,6 +7,10 @@ const AccountSchema = new Schema({
     phone: Number,
     email: String,
     address: String,
+    author: {
+        type: Schema.Types.ObjectId,
+        ref:'User'
+    },
     transactions:[
         {
             type: Schema.Types.ObjectId,

@@ -1,7 +1,25 @@
 <% layout('layouts/boilerplate') %>
-    <h1>All Accounts</h1>
-    <ul>
-        <% for (let account of accounts) {%>
-           <li><a href="/accounts/<%= account._id %>"><%=account.name%></a></li>
-            <% }%>
-    </ul>
+
+<!-- Container for All Accounts Section -->
+<div class="container mx-auto my-10 p-8 bg-white shadow-lg rounded-lg">
+    <h1 class="text-3xl font-semibold text-gray-800 mb-6 text-center">All Accounts</h1>
+    
+    <% if (accounts.length > 0) { %>
+        <!-- Accounts List -->
+        <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6">
+            <% for (let account of accounts) { %>
+                <div class="bg-gray-100 p-6 rounded-lg shadow-lg hover:shadow-xl transition-shadow duration-300">
+                    <h3 class="text-xl font-semibold text-gray-700 mb-3">
+                        <a href="/accounts/<%= account._id %>" class="text-blue-500 hover:text-blue-700">
+                            <%= account.name %>
+                        </a>
+                    </h3>
+                    <p class="text-gray-600">Balance: $<%= account.balance %></p>
+                    <p class="text-gray-600">Email: <%= account.email %></p>
+                </div>
+            <% } %>
+        </div>
+    <% } else { %>
+        <p class="text-center text-gray-600">No accounts available.</p>
+    <% } %>
+</div>

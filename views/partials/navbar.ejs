@@ -1,16 +1,64 @@
-<nav class="navbar sticky-top navbar-expand-lg navbar-dark bg-dark">
-    <div class="container-fluid">
-        <a class="navbar-brand" href="/">BorrowEase</a>
-        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNavAltMarkup"
-            aria-controls="navbarNavAltMarkup" aria-expanded="false" aria-label="Toggle navigation">
-            <span class="navbar-toggler-icon"></span>
+<nav class="bg-gray-800 p-4 fixed w-full top-0 z-10">
+    <div class="container mx-auto flex items-center justify-between">
+        <a class="text-white text-xl font-bold" href="/">BorrowEase</a>
+
+        <!-- Navbar Toggler for mobile view -->
+        <button class="lg:hidden text-white" id="navbarToggler" aria-label="Toggle navigation">
+            <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"></path>
+            </svg>
         </button>
-        <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
-            <div class="navbar-nav">
-                <a class="nav-link" href="/">Home</a>
-                <a class="nav-link" href="/accounts">Accounts</a>
-                <a class="nav-link" href="/accounts/new">New Account</a>
-            </div>
+
+        <!-- Navbar Links for large screens -->
+        <div class="hidden lg:flex space-x-4" id="navbarNav">
+            <a class="text-white hover:text-gray-400" href="/">Home</a>
+            <a class="text-white hover:text-gray-400" href="/accounts/new">New Account</a>
+            <% if (currentUser) { %>
+                <% if (currentUser.isAuthor) { %>
+                    <a class="text-white hover:text-gray-400" href="/accounts">Accounts</a>
+                <% } else { %>
+                    <a class="text-white hover:text-gray-400" href="/accounts/myaccount">My Account</a>
+                <% } %>
+            <% } %>
+        </div>
+
+        <!-- Navbar Authentication Links for large screens -->
+        <div class="hidden lg:flex space-x-4">
+            <% if (!currentUser) { %>
+                <a class="text-white hover:text-gray-400" href="/login">Login</a>
+                <a class="text-white hover:text-gray-400" href="/register">Register</a>
+            <% } else { %>
+                <a class="text-white hover:text-gray-400" href="/logout">Logout</a>
+            <% } %>
         </div>
     </div>
+
+    <!-- Mobile menu dropdown (hidden by default) -->
+    <div class="lg:hidden bg-gray-800 space-y-2 px-4 py-2" id="mobileMenu">
+        <a class="text-white hover:text-gray-400 block" href="/">Home</a>
+        <a class="text-white hover:text-gray-400 block" href="/accounts/new">New Account</a>
+        <% if (currentUser) { %>
+            <% if (currentUser.isAuthor) { %>
+                <a class="text-white hover:text-gray-400 block" href="/accounts">Accounts</a>
+            <% } else { %>
+                <a class="text-white hover:text-gray-400 block" href="/accounts/myaccount">My Account</a>
+            <% } %>
+        <% } %>
+        <% if (!currentUser) { %>
+            <a class="text-white hover:text-gray-400 block" href="/login">Login</a>
+            <a class="text-white hover:text-gray-400 block" href="/register">Register</a>
+        <% } else { %>
+            <a class="text-white hover:text-gray-400 block" href="/logout">Logout</a>
+        <% } %>
+    </div>
 </nav>
+
+<!-- Script to toggle the mobile menu -->
+<script>
+    const navbarToggler = document.getElementById('navbarToggler');
+    const mobileMenu = document.getElementById('mobileMenu');
+    
+    navbarToggler.addEventListener('click', () => {
+        mobileMenu.classList.toggle('hidden');
+    });
+</script>

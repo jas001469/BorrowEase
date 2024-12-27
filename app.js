@@ -1,3 +1,4 @@
+require('dotenv').config();
 const express = require('express')
 const path = require('path')
 const mongoose = require('mongoose')
@@ -8,12 +9,12 @@ const flash = require('connect-flash')
 const passport = require('passport');
 const LocalStrategy = require('passport-local');
 const User = require('./models/user');
-
 const userRoutes = require('./routes/user')
 const accountsRoutes = require('./routes/account')
 const transactionsRoutes = require('./routes/transaction')
-
-mongoose.connect("mongodb://127.0.0.1:27017/BorrowEase")
+const dbUrl = process.env.DB_URL
+// "mongodb://127.0.0.1:27017/BorrowEase"
+mongoose.connect(dbUrl)
 const db = mongoose.connection;
 db.on("error", console.error.bind(console, "connection error:"));
 db.once("open", () => {
@@ -21,6 +22,10 @@ db.once("open", () => {
 });
 
 const app = express();
+
+if (process.env.RUN_SET_ADMIN === 'true') {
+    setAdmin(); // This will set the admin if RUN_SET_ADMIN is set to true
+}
 
 app.engine('ejs',ejsMate)
 app.set('view engine','ejs')
@@ -54,6 +59,7 @@ passport.deserializeUser(User.deserializeUser());
 
 
 app.use((req,res,next)=>{
+    res.locals.currentUser = req.user; 
     res.locals.success=req.flash('success')
     res.locals.error=req.flash('error')
     next()
