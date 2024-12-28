@@ -1,21 +1,25 @@
 require('dotenv').config();
+
 const express = require('express')
 const path = require('path')
 
 const mongoose = require('mongoose')
 const MongoStore = require('connect-mongo');
+const session = require('express-session');
+
 
 const ejsMate = require('ejs-mate')
 const methodOverride = require('method-override')
-const session = require('express-session')
 const flash = require('connect-flash')
 
 const passport = require('passport');
 const LocalStrategy = require('passport-local');
+
 const User = require('./models/user');
 const userRoutes = require('./routes/user')
 const accountsRoutes = require('./routes/account')
 const transactionsRoutes = require('./routes/transaction')
+
 const dbUrl = process.env.DB_URL
 const port = process.env.PORT || 1469;
 // "mongodb://127.0.0.1:27017/BorrowEase"
@@ -41,11 +45,16 @@ app.use(express.urlencoded({extended:true})) // it is used to parse the body
 app.use(methodOverride('_method'))//Lets you use HTTP verbs such as PUT or DELETE in places where the client doesn't support it
 app.use(express.static(path.join(__dirname,'public')))
 
+const store = MongoStore.create({
+    mongoUrl: dbUrl,
+    touchAfter: 24 * 60 * 60,
+    crypto: {
+        secret: process.env.SESSION_SECRET || 'thisshouldbeabettersecret!'
+    }
+});
+
 const sessionconfig = {
-    store: MongoStore.create({
-        mongoUrl: dbUrl,
-        touchAfter: 24 * 3600 // time period in seconds
-    }),
+    store,
     secret: process.env.SESSION_SECRET || 'thisshouldbeabettersecret!',
     resave:false,
     saveUninitialized:true,
