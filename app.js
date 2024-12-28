@@ -46,17 +46,16 @@ app.use(express.urlencoded({extended:true})) // it is used to parse the body
 app.use(methodOverride('_method'))//Lets you use HTTP verbs such as PUT or DELETE in places where the client doesn't support it
 app.use(express.static(path.join(__dirname,'public')))
 
-const store = MongoStore.create({
-    mongoUrl: dbUrl,
-    touchAfter: 24 * 60 * 60,
-    dbName: 'BorrowEaseData',
-    crypto: {
-        secret: process.env.SESSION_SECRET || 'thisshouldbeabettersecret!'
-    }
-});
+// const store = MongoStore.create({
+//     mongoUrl: dbUrl,
+//     touchAfter: 24 * 60 * 60,
+//     dbName: 'BorrowEaseData',
+//     crypto: {
+//         secret: process.env.SESSION_SECRET || 'thisshouldbeabettersecret!'
+//     }
+// });
 
 const sessionconfig = {
-    store,
     secret: process.env.SESSION_SECRET || 'thisshouldbeabettersecret!',
     resave:false,
     saveUninitialized:true,
