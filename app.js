@@ -23,6 +23,7 @@ const transactionsRoutes = require('./routes/transaction')
 const dbUrl = process.env.DB_URL
 const port = process.env.PORT || 1469;
 // "mongodb://127.0.0.1:27017/BorrowEase"
+
 mongoose.connect(dbUrl)
 const db = mongoose.connection;
 db.on("error", console.error.bind(console, "connection error:"));
@@ -48,6 +49,7 @@ app.use(express.static(path.join(__dirname,'public')))
 const store = MongoStore.create({
     mongoUrl: dbUrl,
     touchAfter: 24 * 60 * 60,
+    dbName: 'BorrowEaseData',
     crypto: {
         secret: process.env.SESSION_SECRET || 'thisshouldbeabettersecret!'
     }
@@ -60,6 +62,7 @@ const sessionconfig = {
     saveUninitialized:true,
     cookie:{
         httpOnly:true,
+        secure: process.env.NODE_ENV === 'production',
         expires: Date.now()+1000*60*60*24*7,
         maxAge:1000*60*60*24*7
     }
