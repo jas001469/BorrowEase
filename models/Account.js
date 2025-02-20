@@ -7,7 +7,7 @@ const AccountSchema = new Schema({
     phone: Number,
     email: String,
     address: String,
-    author: {
+    author: { 
         type: Schema.Types.ObjectId,
         ref:'User'
     },
