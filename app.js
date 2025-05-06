@@ -20,8 +20,8 @@ const userRoutes = require('./routes/user')
 const accountsRoutes = require('./routes/account')
 const transactionsRoutes = require('./routes/transaction')
 
-// const dbUrl = process.env.DB_URL
-const dbUrl = "mongodb://127.0.0.1:27017/BorrowEase";
+ const dbUrl = process.env.DB_URL
+//const dbUrl = "mongodb://127.0.0.1:27017/BorrowEase";
 const port = process.env.PORT || 1469;
 // "mongodb://127.0.0.1:27017/BorrowEase"
 
